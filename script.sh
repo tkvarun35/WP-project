@@ -1,14 +1,20 @@
 #!/bin/bash
 
 # Function to check if a command exists
+COLOR1='\033[1;33m'
+COLOR2='\033[1;96m'
+NC='\033[0m'
+
 command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 check_docker_daemon() {
-  if sudo systemctl is-active docker >/dev/null 2>&1; then
+  if docker info >/dev/null 2>&1; then
     echo "Docker daemon is running."
   else
-    echo "Docker daemon is not running.Kindly wait trying to restart..."
+    # echo "Docker daemon is not running.Kindly wait trying to restart..."
+    echo -e ${COLOR1}Docker daemon is not running.Kindly wait trying to restart...${NC} 
+    open --background -a Docker
     sudo systemctl start docker
     sleep 10
     check_docker_daemon
@@ -118,8 +124,7 @@ EOF
   echo "You can now view the site in the browser"
 
   echo -e "\n"
-  COLOR2='\033[1;96m'
-  NC='\033[0m'
+  
 
   # Function to enable or disable the site
   enable_disable_site() {
