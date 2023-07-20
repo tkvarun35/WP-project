@@ -101,14 +101,14 @@ EOF
     else
         echo "$container_id"
         docker exec ${container_id} curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-        sleep 5
+        sleep 10
         docker exec ${container_id} chmod +x wp-cli.phar
         docker exec ${container_id} mv wp-cli.phar /usr/local/bin/wp
         docker exec ${container_id} wp core download --allow-root
-        sleep 5
+        sleep 10
         docker exec ${container_id} chmod 600 wp-config.php
         docker exec ${container_id} wp core install --url=$site_name --title="$title" --admin_name=$admin_name --admin_password=$admin_password --admin_email=$admin_email --allow-root
-        sleep 5
+        sleep 3
     fi
 
   # Prompt user to open the site
@@ -194,9 +194,14 @@ echo -e "\n"
     fi
       
       ;;
-    *)
+      exit)
       echo "Exiting..."
       exit 1
+   
+      
+      ;;
+    *)
+      echo "Invalid Input!!"
       ;;
     esac
 done
