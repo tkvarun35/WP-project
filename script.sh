@@ -8,9 +8,9 @@ check_docker_daemon() {
   if sudo systemctl is-active docker >/dev/null 2>&1; then
     echo "Docker daemon is running."
   else
-    echo "Docker daemon is not running."
-    sleep 10
+    echo "Docker daemon is not running.Kindly wait trying to restart..."
     sudo systemctl start docker
+    sleep 10
     check_docker_daemon
   fi
 }
@@ -35,6 +35,7 @@ if ! command_exists docker-compose; then
   echo "Docker Compose has been installed."
   check_docker_daemon
 fi
+check_docker_daemon
 
 # Function to create the WordPress site
 create_wordpress_site() {
