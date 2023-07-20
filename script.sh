@@ -4,6 +4,16 @@
 command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
+check_docker_daemon() {
+    if sudo systemctl is-active docker >/dev/null 2>&1; then
+        echo "Docker daemon is running."
+    else
+        echo "Docker daemon is not running."
+        sleep 10
+        sudo systemctl start docker
+        check_docker_daemon
+    fi
+}
 
 # Check if Docker is installed
 if ! command_exists docker; then
@@ -13,6 +23,7 @@ if ! command_exists docker; then
   sudo usermod -aG docker "$(whoami)"
   rm get-docker.sh
   echo "Docker has been installed."
+  check_docker_daemon
 fi
 
 # Check if Docker Compose is installed
@@ -22,6 +33,7 @@ if ! command_exists docker-compose; then
     -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
   echo "Docker Compose has been installed."
+  check_docker_daemon
 fi
 
 # Function to create the WordPress site
@@ -84,6 +96,8 @@ EOF
 # Check if a container ID was found
     if [ -z "$container_id" ]; then
         echo "No container running with the image name: $image_name"
+        echo "It may occur if your Port 80 is busy!!"
+        exit 0;
     else
         echo "$container_id"
         docker exec ${container_id} curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -163,7 +177,7 @@ rm docker-compose.yml
   while true; do
 
 echo -e "Local:             ${COLOR2}http://localhost/${NC} "
-echo -e "On your network:   ${COLOR2}http://$site_name/${NC} "
+echo -e "On your sitename:   ${COLOR2}http://$site_name/${NC} "
 echo -e "\n"
 
     echo "Press Ctrl+C to exit..."

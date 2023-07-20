@@ -7,7 +7,9 @@ The script will also verify the presence of Docker and Docker Compose on your sy
 
 ## Prerequisites
 
-To execute this Bash script, ensure that your system has Bash installed.
+*[To execute this Bash script, ensure that your system has Bash installed.]
+*[Ensure that Port 80 is available on your system.]
+
 
 ## Installation
 
