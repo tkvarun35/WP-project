@@ -28,7 +28,7 @@ cd WP-project/
 Run the script
 
 ```bash
-bash script.sh
+sudo bash script.sh
 ```
 Ensure that Port 80 is available on your system.
 Otherwise, it will exit.
